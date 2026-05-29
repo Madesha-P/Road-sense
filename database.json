@@ -1,0 +1,132 @@
+[
+    {
+        "id": "hazard-001",
+        "lat": 12.9738,
+        "lng": 77.6119,
+        "severity": "Critical",
+        "score": 38,
+        "count": 3,
+        "timestamp": "2026-05-10T12:00:00Z",
+        "street": "MG Road & Residency Road"
+    },
+    {
+        "id": "hazard-002",
+        "lat": 12.9696,
+        "lng": 77.6416,
+        "severity": "High Risk",
+        "score": 52,
+        "count": 2,
+        "timestamp": "2026-05-12T14:30:00Z",
+        "street": "Indiranagar 100 Feet Rd"
+    },
+    {
+        "id": "hazard-003",
+        "lat": 12.9352,
+        "lng": 77.6244,
+        "severity": "Moderate",
+        "score": 68,
+        "count": 1,
+        "timestamp": "2026-05-15T09:15:00Z",
+        "street": "Koramangala 80 Feet Rd"
+    },
+    {
+        "id": "hazard-004",
+        "lat": 12.9298,
+        "lng": 77.5815,
+        "severity": "Critical",
+        "score": 41,
+        "count": 4,
+        "timestamp": "2026-05-18T16:45:00Z",
+        "street": "Jayanagar 4th Block"
+    },
+    {
+        "id": "hazard-005",
+        "lat": 13.0032,
+        "lng": 77.5685,
+        "severity": "Stable",
+        "score": 82,
+        "count": 0,
+        "timestamp": "2026-05-20T11:20:00Z",
+        "street": "Malleshwaram 15th Cross"
+    },
+    {
+        "id": "hazard-006",
+        "lat": 13.0358,
+        "lng": 77.5971,
+        "severity": "High Risk",
+        "score": 59,
+        "count": 2,
+        "timestamp": "2026-05-21T08:00:00Z",
+        "street": "Hebbal Flyover"
+    },
+    {
+        "id": "hazard-007",
+        "lat": 12.9279,
+        "lng": 77.6809,
+        "severity": "Critical",
+        "score": 35,
+        "count": 3,
+        "timestamp": "2026-05-22T17:10:00Z",
+        "street": "Outer Ring Road, Bellandur"
+    },
+    {
+        "id": "hazard-008",
+        "lat": 12.9895,
+        "lng": 77.5532,
+        "severity": "Moderate",
+        "score": 71,
+        "count": 1,
+        "timestamp": "2026-05-24T13:05:00Z",
+        "street": "Rajajinagar Chord Road"
+    },
+    {
+        "id": "hazard-009",
+        "lat": 12.9698,
+        "lng": 77.75,
+        "severity": "High Risk",
+        "score": 48,
+        "count": 3,
+        "timestamp": "2026-05-25T10:40:00Z",
+        "street": "Whitefield Main Road"
+    },
+    {
+        "id": "hazard-010",
+        "lat": 12.8407,
+        "lng": 77.6753,
+        "severity": "Critical",
+        "score": 29,
+        "count": 5,
+        "timestamp": "2026-05-27T15:55:00Z",
+        "street": "Electronic City Phase 1"
+    },
+    {
+        "id": "hazard-fc6661",
+        "lat": 12.33672547346469,
+        "lng": 76.61948332940581,
+        "severity": "Critical",
+        "score": 32,
+        "count": 4,
+        "timestamp": "2026-05-29T04:28:57Z",
+        "street": "High Tension Main Road"
+    },
+    {
+        "id": "hazard-7f0856",
+        "lat": 12.33672547346469,
+        "lng": 76.61948332940581,
+        "severity": "High Risk",
+        "score": 56,
+        "count": 2,
+        "timestamp": "2026-05-29T04:30:03Z",
+        "street": "High Tension Main Road"
+    },
+    {
+        "id": "hazard-2cd4ec",
+        "lat": 12.336727797842684,
+        "lng": 76.61959771376627,
+        "severity": "Critical",
+        "score": 32,
+        "count": 4,
+        "timestamp": "2026-05-29T05:33:34Z",
+        "street": "High Tension Main Road"
+    }
+]

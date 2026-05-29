@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoadSense // Cinematic Infrastructure Intelligence Ecosystem</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="RoadSense is a premium AI-powered road intelligence platform combining computer vision pothole detection, GPS routing, predictive analytics, and municipal smart-city operating systems.">
+    <meta name="keywords" content="smart-city, AI infrastructure, pothole detection, GIS analytics, road safety, path planning">
+    <meta name="author" content="RoadSense Technologies">
+    
+    <!-- Google Fonts: Cormorant Garamond (Serif), Inter (Sans-Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js CSS for GIS Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Core Application CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dark-mode">
+    
+    <!-- Ambient Background Glows & Particle Canvas -->
+    <div class="ambient-glow glow-blue"></div>
+    <div class="ambient-glow glow-magenta"></div>
+    <div class="grid-overlay"></div>
+    <canvas id="bg-particles" class="bg-particles"></canvas>
+
+    <!-- SECTION 1 — FLOATING NAVBAR -->
+    <header class="navbar-wrapper">
+        <nav class="navbar" id="main-nav">
+            <div class="nav-logo" id="nav-logo-btn">
+                <span class="logo-txt">ROADSENSE</span>
+                <span class="logo-dot"></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="active" data-page="landing"><a href="#home">Home</a></li>
+                <li data-page="lab"><a href="#lab">RoadSense Lab</a></li>
+                <li data-page="routes"><a href="#routes">Safe Routes</a></li>
+                <li data-page="karnataka"><a href="#karnataka">Karnataka Sense</a></li>
+                <li data-page="analytics"><a href="#analytics">Analytics</a></li>
+                <li data-page="dashboard"><a href="#dashboard">Dashboard</a></li>
+            </ul>
+            
+            <button class="cta-pill-nav" id="nav-cta-btn">
+                <span class="btn-shine"></span>
+                <span class="btn-text">Analyze Road</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- MAIN SPA CONTAINER -->
+    <main class="spa-content">
+
+        <!-- ================= PAGE 1: LANDING PAGE ================= -->
+        <section id="page-landing" class="page-view active">
+            
+            <!-- SECTION 2 — CINEMATIC HERO SECTION -->
+            <div class="hero-section">
+                <div class="hero-container">
+                    <div class="hero-category">INFRASTRUCTURE INTELLIGENCE</div>
+                    <h1 class="hero-title">
+                        Navigate Beyond<br>
+                        <span class="serif-italic">Damaged Roads</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        RoadSense combines AI pothole detection, GPS-powered road intelligence, predictive analytics, and safer route navigation into one unified smart-city ecosystem.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="cta-pill primary" id="hero-primary-cta">
+                            <span class="btn-text">Analyze Road</span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                        <button class="cta-pill secondary" id="hero-secondary-cta">
+                            <span class="btn-text">Explore Safe Routes</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3 — LIVE CITY MAP PREVIEW -->
+            <div class="map-preview-section">
+                <div class="section-header-center">
+                    <h2 class="section-title">City-Wide Telemetry Map</h2>
+                    <p class="section-subtitle">Real-time status of pothole clusters and diagnostic reports overlaying urban corridors.</p>
+                </div>
+                
+                <div class="map-preview-container">
+                    <div id="landing-map" class="map-canvas"></div>
+                    
+                    <!-- Floating Glass HUD Widgets -->
+                    <div class="hud-widget top-left">
+                        <div class="hud-header">
+                            <i data-lucide="activity" class="glow-blue-icon"></i>
+                            <span>SYSTEM STATE</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-label">CITY HEALTH</span>
+                            <span class="hud-val text-green" id="hud-city-health">78.4%</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-label">SCAN ENGINE</span>
+                            <span class="hud-val text-blue">ONLINE</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hud-widget top-right">
+                        <div class="hud-header">
+                            <i data-lucide="shield-alert" class="glow-magenta-icon"></i>
+                            <span>ACTIVE ALERTS</span>
+                        </div>
+                        <div class="hud-big-num text-magenta" id="hud-active-alerts">--</div>
+                        <div class="hud-desc">Critical hazards within monitored municipal zones.</div>
+                    </div>
+                    
+                    <div class="hud-widget bottom-left">
+                        <div class="hud-header">
+                            <i data-lucide="database"></i>
+                            <span>TELEMETRY COUNTS</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-label">DETECTED HAZARDS</span>
+                            <span class="hud-val text-white" id="hud-hazard-count">--</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-label">ROADS TRACKED</span>
+                            <span class="hud-val text-white">142</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4 — FEATURE ECOSYSTEM -->
+            <div class="features-section">
+                <div class="section-header-center">
+                    <h2 class="section-title">The Intelligence Ecosystem</h2>
+                    <p class="section-subtitle">Fused computer vision and geographic metrics delivering next-generation civic mobility.</p>
+                </div>
+                
+                <div class="feature-grid">
+                    <div class="feature-card" data-target-page="lab">
+                        <div class="card-icon"><i data-lucide="eye"></i></div>
+                        <h3 class="card-title">AI Detection</h3>
+                        <p class="card-desc">Scan pavement using deep learning image analysis models to outline cracks and estimate pothole volume.</p>
+                        <span class="card-action">Launch Lab <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="lab">
+                        <div class="card-icon"><i data-lucide="map-pin"></i></div>
+                        <h3 class="card-title">GPS Mapping</h3>
+                        <p class="card-desc">Automatically tag uploads with spatial coordinates, compiling details into public road health metrics.</p>
+                        <span class="card-action">View Map <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="routes">
+                        <div class="card-icon"><i data-lucide="navigation"></i></div>
+                        <h3 class="card-title">Safe Route Engine</h3>
+                        <p class="card-desc">Calculate route selections that actively route your vehicle away from high-density damage areas.</p>
+                        <span class="card-action">Plan Route <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="routes">
+                        <div class="card-icon"><i data-lucide="volume-2"></i></div>
+                        <h3 class="card-title">Driver Alerts</h3>
+                        <p class="card-desc">Get spoken warning voice notifications when critical pavement hazards are detected ahead on your route.</p>
+                        <span class="card-action">Activate Alerts <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="analytics">
+                        <div class="card-icon"><i data-lucide="trending-up"></i></div>
+                        <h3 class="card-title">Predictive Analytics</h3>
+                        <p class="card-desc">Track degradation trends to estimate repair windows before failures expand to critical severity.</p>
+                        <span class="card-action">Open Forecast <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="dashboard">
+                        <div class="card-icon"><i data-lucide="sliders"></i></div>
+                        <h3 class="card-title">Municipal Dashboard</h3>
+                        <p class="card-desc">Enables local governments to queue repair resources according to severity and user complaint volume.</p>
+                        <span class="card-action">Access Console <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="analytics">
+                        <div class="card-icon"><i data-lucide="cloud-rain"></i></div>
+                        <h3 class="card-title">Seasonal Correlation</h3>
+                        <p class="card-desc">Cross-reference local monsoon rainfall and temperature data with failure progression speeds.</p>
+                        <span class="card-action">Read Studies <i data-lucide="arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target-page="dashboard">
+                        <div class="card-icon"><i data-lucide="share-2"></i></div>
+                        <h3 class="card-title">Social Auto-Blast</h3>
+                        <p class="card-desc">Broadcast emergency hazard updates automatically across WhatsApp, Telegram, and Twitter feeds.</p>
+                        <span class="card-action">Configure Blaster <i data-lucide="arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= PAGE 2: ROADSENSE LAB ================= -->
+        <section id="page-lab" class="page-view">
+            <div class="page-header">
+                <span class="page-badge">IMAGE RECOGNITION LABORATORY</span>
+                <h1 class="page-title serif-italic">Infrastructure Scan Command</h1>
+                <p class="page-subtitle">Upload pavement images to activate computer vision layers, extract diagnostic parameters, and log structural defects.</p>
+            </div>
+            
+            <div class="split-layout">
+                <!-- LEFT: UPLOAD CONTROLS -->
+                <div class="control-panel">
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="upload-cloud"></i> DATA INGESTION</h2>
+                        
+                        <!-- Drag and Drop upload area -->
+                        <div class="upload-dropzone" id="lab-dropzone">
+                            <input type="file" id="lab-file-input" accept="image/*" class="hidden-file-input">
+                            <div class="dropzone-content">
+                                <i data-lucide="focus" class="dropzone-icon"></i>
+                                <p class="dropzone-text-main">DRAG & DROP PAVEMENT ARCHIVE</p>
+                                <p class="dropzone-text-sub">or click to browse local directory</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sample images for testing -->
+                        <div class="sample-selection">
+                            <p class="sample-label">SELECT DEMO TELEMETRY SAMPLES:</p>
+                            <div class="sample-btn-group">
+                                <button class="btn-sample" data-sample="1">
+                                    <span>CRITICAL POTHOLE</span>
+                                    <span class="btn-sample-tag red">SCAN A</span>
+                                </button>
+                                <button class="btn-sample" data-sample="2">
+                                    <span>MODERATE CRACKS</span>
+                                    <span class="btn-sample-tag orange">SCAN B</span>
+                                </button>
+                                <button class="btn-sample" data-sample="3">
+                                    <span>STABLE HIGHWAY</span>
+                                    <span class="btn-sample-tag green">SCAN C</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 2 — GPS ACCESS -->
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="map-pin"></i> GPS LOCATION REFERENCE</h2>
+                        <div class="gps-access-card" id="gps-status-card">
+                            <div class="gps-header">
+                                <span class="gps-dot pulsing" id="gps-dot"></span>
+                                <span class="gps-status-lbl" id="gps-status-text">Acquiring Satellites...</span>
+                            </div>
+                            <div class="gps-coordinates">
+                                <div class="coord-field">
+                                    <span class="coord-lbl">LATITUDE</span>
+                                    <span class="coord-val" id="gps-lat">--.------</span>
+                                </div>
+                                <div class="coord-field">
+                                    <span class="coord-lbl">LONGITUDE</span>
+                                    <span class="coord-val" id="gps-lng">--.------</span>
+                                </div>
+                            </div>
+                            <div class="street-address-indicator">
+                                <i data-lucide="compass"></i>
+                                <span id="gps-street">Verifying municipal sector address...</span>
+                            </div>
+                            <button class="cta-pill secondary small" id="gps-manual-btn">
+                                <i data-lucide="locate-fixed"></i>
+                                <span>Force Precise Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT: DIAGNOSTICS & TELEMETRY -->
+                <div class="display-panel">
+                    <!-- SECTION 3: IMAGE SCANNER SCREEN -->
+                    <div class="scanner-screen">
+                        <div class="scanner-screen-header">
+                            <div class="scanner-hud-marker">HUD.08_SYS_OK</div>
+                            <div class="scanner-scan-status" id="scan-status-indicator">STANDBY</div>
+                        </div>
+                        <div class="image-viewer-container">
+                            <!-- Visual Scan Overlay -->
+                            <div class="scan-bar" id="scan-laser-line"></div>
+                            <div class="scanning-loader" id="scanning-hud-loader">
+                                <div class="tech-spinner"></div>
+                                <p class="loader-txt">EXECUTING DEEP PIXEL SCANNING...</p>
+                            </div>
+                            <!-- Uploaded Image / Processed Output -->
+                            <img id="lab-image-display" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Telemetry Display">
+                            <div class="display-placeholder" id="lab-display-placeholder">
+                                <i data-lucide="scan-face" class="placeholder-icon"></i>
+                                <p>Awaiting raw telemetry feed...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 4: DIAGNOSTIC DETAILS -->
+                    <div class="diagnostic-grid">
+                        
+                        <!-- Metrics -->
+                        <div class="diag-card glass-panel">
+                            <div class="diag-card-title">TELEMETRY SCORE</div>
+                            <div class="telemetry-metrics">
+                                <div class="metric-row">
+                                    <span>CONFIDENCE RATE</span>
+                                    <span class="metric-num text-blue" id="metric-confidence">0.0%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>DEFECTS DETECTED</span>
+                                    <span class="metric-num text-magenta" id="metric-count">0</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>STRUCTURAL RISK</span>
+                                    <span class="metric-num" id="metric-severity">N/A</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>REPAIR PRIORITY</span>
+                                    <span class="metric-num" id="metric-urgency">N/A</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- SECTION 5: ROAD HEALTH SCORE CIRCULAR UI -->
+                        <div class="diag-card glass-panel flex-center-col">
+                            <div class="diag-card-title">ROAD HEALTH SCORE</div>
+                            <div class="radial-score-wrapper">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.05)" stroke-width="6" fill="transparent" r="50" cx="60" cy="60"/>
+                                    <circle class="progress-ring-circle" id="radial-health-stroke" stroke="#00d2ff" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                                </svg>
+                                <div class="radial-score-val" id="radial-health-score">--</div>
+                            </div>
+                            <div class="radial-score-label" id="radial-health-label">Awaiting Scan</div>
+                        </div>
+                        
+                        <!-- SECTION 6: 3D ROAD TERRAIN MESH -->
+                        <div class="diag-card glass-panel span-2-cols">
+                            <div class="diag-card-title flex-between">
+                                <span>3D LIDAR SURFACE RECONSTRUCTION</span>
+                                <span class="tag-cyan">SIMULATED DEPTH ENGINE</span>
+                            </div>
+                            <div class="lidar-mesh-container">
+                                <canvas id="lidar-mesh-canvas" class="lidar-canvas"></canvas>
+                                <div class="lidar-overlay-hud">
+                                    <div>MESH RESOLUTION: 45x30 GRID</div>
+                                    <div id="lidar-mesh-state">STATUS: STEADY FLAT GRID</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 3: SAFE ROUTE ENGINE ================= -->
+        <section id="page-routes" class="page-view">
+            <div class="page-header">
+                <span class="page-badge">AI ROUTE ASSISTANT</span>
+                <h1 class="page-title serif-italic">Smarter Pathfinding</h1>
+                <p class="page-subtitle">Input your urban destination to calculate routes that bypass critical pavement decay, reducing suspension strain.</p>
+            </div>
+            
+            <div class="split-layout">
+                <!-- LEFT: ROUTE INPUTS & SELECTIONS -->
+                <div class="control-panel">
+                    <!-- SECTION 1: ROUTE INPUTS -->
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="navigation"></i> ROUTE DESIGNS</h2>
+                        <div class="route-input-group">
+                            <div class="input-glow-wrapper">
+                                <label class="input-lbl">START LOCATION</label>
+                                <div class="input-with-icon">
+                                    <i data-lucide="circle-dot" class="text-blue"></i>
+                                    <input type="text" id="route-start" placeholder="My GPS Coordinates" value="Kanakapura Road, Bengaluru">
+                                </div>
+                            </div>
+                            
+                            <div class="input-glow-wrapper">
+                                <label class="input-lbl">DESTINATION</label>
+                                <div class="input-with-icon">
+                                    <i data-lucide="map-pin" class="text-magenta"></i>
+                                    <input type="text" id="route-end" placeholder="Search destination sector..." value="Mysore Road, Bengaluru">
+                                </div>
+                            </div>
+                            
+                            <button class="cta-pill primary full-width" id="btn-calc-route">
+                                <span>COMPUTE SAFETY ROUTING</span>
+                                <i data-lucide="cpu"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 3: ROUTE OPTIONS CARDS -->
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="layers"></i> COMPUTE ALTERNATIVES</h2>
+                        <div class="route-cards-list" id="route-cards-list">
+                            <!-- Card 1: Safest -->
+                            <div class="route-card active-card border-green" id="card-route-safest" data-route="safest">
+                                <div class="route-card-header">
+                                    <span class="route-pill bg-green">SAFEST ROUTE</span>
+                                    <span class="route-card-time" id="val-safe-time">18 mins</span>
+                                </div>
+                                <div class="route-card-metrics">
+                                    <div>
+                                        <div class="r-metric-lbl">DISTANCE</div>
+                                        <div class="r-metric-val" id="val-safe-dist">-- km</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HEALTH INDEX</div>
+                                        <div class="r-metric-val text-green" id="val-safe-score">88/100</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HAZARD DENSITY</div>
+                                        <div class="r-metric-val" id="val-safe-density">0.0 /km</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card 2: Balanced -->
+                            <div class="route-card border-yellow" id="card-route-balanced" data-route="balanced">
+                                <div class="route-card-header">
+                                    <span class="route-pill bg-yellow">BALANCED</span>
+                                    <span class="route-card-time" id="val-bal-time">14 mins</span>
+                                </div>
+                                <div class="route-card-metrics">
+                                    <div>
+                                        <div class="r-metric-lbl">DISTANCE</div>
+                                        <div class="r-metric-val" id="val-bal-dist">-- km</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HEALTH INDEX</div>
+                                        <div class="r-metric-val text-yellow" id="val-bal-score">64/100</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HAZARD DENSITY</div>
+                                        <div class="r-metric-val" id="val-bal-density">1.5 /km</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card 3: Fastest -->
+                            <div class="route-card border-red" id="card-route-fastest" data-route="fastest">
+                                <div class="route-card-header">
+                                    <span class="route-pill bg-red">FASTEST (DIRECT)</span>
+                                    <span class="route-card-time" id="val-fast-time">11 mins</span>
+                                </div>
+                                <div class="route-card-metrics">
+                                    <div>
+                                        <div class="r-metric-lbl">DISTANCE</div>
+                                        <div class="r-metric-val" id="val-fast-dist">-- km</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HEALTH INDEX</div>
+                                        <div class="r-metric-val text-magenta" id="val-fast-score">42/100</div>
+                                    </div>
+                                    <div>
+                                        <div class="r-metric-lbl">HAZARD DENSITY</div>
+                                        <div class="r-metric-val" id="val-fast-density">3.8 /km</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 5: VEHICLE DURABILITY ANALYSIS -->
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="wrench"></i> VEHICLE IMPACT ESTIMATION</h2>
+                        <div class="durability-box glass-panel">
+                            <div class="durability-row">
+                                <span class="d-label">SUSPENSION COEFFICIENT</span>
+                                <div class="d-bar-bg">
+                                    <div class="d-bar-fill fill-green" id="durability-suspension-bar" style="width: 88%;"></div>
+                                </div>
+                                <span class="d-val text-green" id="durability-suspension-val">OPTIMAL (12%)</span>
+                            </div>
+                            <div class="durability-row">
+                                <span class="d-label">TIRE DECAY CHANCE</span>
+                                <div class="d-bar-bg">
+                                    <div class="d-bar-fill fill-green" id="durability-tire-bar" style="width: 8%;"></div>
+                                </div>
+                                <span class="d-val text-green" id="durability-tire-val">8%</span>
+                            </div>
+                            <div class="durability-row">
+                                <span class="d-label">ROUTE SMOOTHNESS SCORE</span>
+                                <span class="d-val text-white" id="durability-smoothness-val">88%</span>
+                            </div>
+                            <div class="durability-row">
+                                <span class="d-label">VEHICLE SAFETY INDEX</span>
+                                <span class="d-val text-white" id="durability-safety-val">A+ (92/100)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT: INTERACTIVE MAP & DRIVER VOICE ALERTS -->
+                <div class="display-panel flex-grow-map">
+                    <!-- SECTION 2: MAP -->
+                    <div class="routes-map-container">
+                        <div id="routes-map" class="map-canvas full-height-map"></div>
+                        
+                        <!-- SECTION 4: REAL-TIME DRIVER ALERT HUD OVERLAYS -->
+                        <div class="driver-alert-console glass-panel" id="voice-alert-hud">
+                            <div class="console-header">
+                                <div class="flex-center">
+                                    <span class="voice-dot glowing-dot"></span>
+                                    <span class="console-title">REAL-TIME TELEMETRY TRANSCEIVER</span>
+                                </div>
+                                <div class="sim-controls">
+                                    <button class="btn-action-nav flex-center" id="btn-toggle-sim">
+                                        <i data-lucide="play" id="sim-play-icon"></i>
+                                        <span id="sim-btn-text">Start Telemetry Simulation</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="console-body-grid">
+                                <!-- Warning indicator popups -->
+                                <div class="proximity-warning-box inactive" id="proximity-warning-box">
+                                    <div class="alert-pulse-ring"></div>
+                                    <div class="alert-icon-wrap"><i data-lucide="alert-triangle"></i></div>
+                                    <div class="alert-content">
+                                        <div class="alert-text-main">HAZARD INCOMING</div>
+                                        <div class="alert-text-sub" id="alert-sub-message">CRITICAL POTHOLE 200M AHEAD</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Audio synthesis controls -->
+                                <div class="audio-control-panel">
+                                    <div class="setting-title"><i data-lucide="speech"></i> AUDIO ALERTS INTEGRATION</div>
+                                    <div class="settings-grid">
+                                        <div class="setting-row">
+                                            <span class="setting-lbl">VOICE WARNINGS</span>
+                                            <label class="switch">
+                                                <input type="checkbox" id="voice-toggle" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-row">
+                                            <span class="setting-lbl">WARNING GENDER</span>
+                                            <div class="voice-btn-group">
+                                                <button class="btn-voice-toggle active" id="btn-voice-female">FEMALE</button>
+                                                <button class="btn-voice-toggle" id="btn-voice-male">MALE</button>
+                                            </div>
+                                        </div>
+                                        <div class="setting-row span-2-columns">
+                                            <span class="setting-lbl">VOLUME TRANSCEIVER</span>
+                                            <div class="volume-slider-wrapper">
+                                                <i data-lucide="volume-1"></i>
+                                                <input type="range" id="voice-volume" min="0" max="1" step="0.1" value="0.8">
+                                                <i data-lucide="volume-2"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 4: PREDICTIVE ANALYTICS ================= -->
+        <section id="page-karnataka" class="page-view">
+            <div class="page-header">
+                <span class="page-badge">REGIONAL INFRASTRUCTURE INTELLIGENCE</span>
+                <h1 class="page-title serif-italic">Karnataka Road Sense</h1>
+                <p class="page-subtitle">Access real-time road health telemetry strictly for Karnataka municipal sectors and urban corridors.</p>
+            </div>
+
+            <div class="split-layout">
+                <!-- LEFT: SEARCH & FILTERS -->
+                <div class="control-panel">
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="search"></i> ROAD SCANNER</h2>
+                        <div class="route-input-group">
+                            <div class="input-glow-wrapper">
+                                <label class="input-lbl">TARGET ROAD / CITY (KARNATAKA ONLY)</label>
+                                <div class="input-with-icon">
+                                    <i data-lucide="map" class="text-blue"></i>
+                                    <input type="text" id="karnataka-road-search" placeholder="e.g. MG Road, Bengaluru" value="MG Road, Bengaluru">
+                                </div>
+                            </div>
+                            <button class="cta-pill primary full-width" id="btn-karnataka-search">
+                                <span>ANALYZE ROAD HEALTH</span>
+                                <i data-lucide="cpu"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SEARCH RESULT CARD -->
+                    <div class="panel-section inactive" id="karnataka-result-card">
+                        <h2 class="panel-title-hud"><i data-lucide="clipboard-check"></i> SCAN RESULTS</h2>
+                        <div class="diag-card glass-panel flex-center-col" style="margin-bottom: 20px;">
+                            <div class="diag-card-title" id="karnataka-road-name">MG ROAD, BENGALURU</div>
+                            <div class="radial-score-wrapper">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.05)" stroke-width="6" fill="transparent" r="50" cx="60" cy="60"/>
+                                    <circle class="progress-ring-circle" id="karnataka-health-stroke" stroke="#00d2ff" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                                </svg>
+                                <div class="radial-score-val" id="karnataka-health-score">--</div>
+                            </div>
+                            <div class="radial-score-label" id="karnataka-health-label">Awaiting Analysis</div>
+                        </div>
+                        <div class="telemetry-metrics">
+                            <div class="metric-row">
+                                <span>SEVERITY</span>
+                                <span class="metric-num" id="karnataka-severity">N/A</span>
+                            </div>
+                            <div class="metric-row">
+                                <span>LAST SCAN</span>
+                                <span class="metric-num text-blue" id="karnataka-last-scan">N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: STATEWIDE INVENTORY -->
+                <div class="display-panel">
+                    <div class="panel-section glass-panel full-height-panel">
+                        <div class="panel-header-hud flex-between">
+                            <h2 class="panel-title-hud"><i data-lucide="database"></i> KARNATAKA INFRASTRUCTURE INVENTORY</h2>
+                            <span class="tag-blue" id="karnataka-inventory-count">0 RECORDS</span>
+                        </div>
+                        <div class="karnataka-inventory-list" id="karnataka-inventory-list">
+                            <!-- Populated dynamically by JS -->
+                            <div class="inventory-loader">Querying Karnataka database...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: PREDICTIVE ANALYTICS ================= -->
+        <section id="page-analytics" class="page-view">
+            <div class="page-header">
+                <span class="page-badge">DEGRADATION FORECAST ENGINE</span>
+                <h1 class="page-title serif-italic">Structural Decay Forecasting</h1>
+                <p class="page-subtitle">Evaluate road surface erosion indexes using time-based analysis models, cross-referenced with seasonal rain and heat indices.</p>
+            </div>
+            
+            <!-- SECTION 1: ANALYTICS OVERVIEW -->
+            <div class="analytics-metrics-overview">
+                <div class="overview-metric-card glass-panel">
+                    <div class="om-lbl">ROADS REGISTERED</div>
+                    <div class="om-val text-blue">142</div>
+                    <div class="om-desc">Continuous telemetry points.</div>
+                </div>
+                <div class="overview-metric-card glass-panel">
+                    <div class="om-lbl">CRITICAL INFRASTRUCTURE</div>
+                    <div class="om-val text-magenta" id="analytics-critical-count">18</div>
+                    <div class="om-desc">Urgent repair requested.</div>
+                </div>
+                <div class="overview-metric-card glass-panel">
+                    <div class="om-lbl">DEGRADATION ZONES</div>
+                    <div class="om-val text-yellow">5</div>
+                    <div class="om-desc">High deterioration risk.</div>
+                </div>
+                <div class="overview-metric-card glass-panel">
+                    <div class="om-lbl">CITY DECAY INDEX</div>
+                    <div class="om-val text-white">64/100</div>
+                    <div class="om-desc">Aggregate urban road health index.</div>
+                </div>
+            </div>
+            
+            <div class="split-layout">
+                <!-- LEFT: CHARTS & DEGRADATION VELOCITIES -->
+                <div class="analytic-panel-left">
+                    <!-- SECTION 2: ROAD HEALTH TREND GRAPH -->
+                    <div class="panel-section glass-panel">
+                        <div class="panel-header-hud flex-between">
+                            <h2 class="panel-title-hud"><i data-lucide="area-chart"></i> DECAY VELOCITY PROJECTIONS</h2>
+                            <div class="legend-group">
+                                <span class="legend-dot bg-magenta"></span> Main Corridors
+                                <span class="legend-dot bg-yellow"></span> Suburban Avenues
+                                <span class="legend-dot bg-blue"></span> Expressways
+                            </div>
+                        </div>
+                        
+                        <div class="chart-canvas-wrapper">
+                            <!-- Custom SVG Line Graph -->
+                            <svg id="svg-trend-chart" viewBox="0 0 600 240" class="custom-svg-chart">
+                                <!-- Grid Lines -->
+                                <line x1="50" y1="30" x2="550" y2="30" stroke="rgba(255,255,255,0.05)" />
+                                <line x1="50" y1="80" x2="550" y2="80" stroke="rgba(255,255,255,0.05)" />
+                                <line x1="50" y1="130" x2="550" y2="130" stroke="rgba(255,255,255,0.05)" />
+                                <line x1="50" y1="180" x2="550" y2="180" stroke="rgba(255,255,255,0.05)" />
+                                
+                                <!-- Axes -->
+                                <line x1="50" y1="30" x2="50" y2="180" stroke="rgba(255,255,255,0.1)" />
+                                <line x1="50" y1="180" x2="550" y2="180" stroke="rgba(255,255,255,0.1)" />
+                                
+                                <!-- SVG Paths (Will be filled dynamically by JS) -->
+                                <path id="chart-path-corridors" fill="none" stroke="#ff007f" stroke-width="3" stroke-linecap="round" />
+                                <path id="chart-path-suburban" fill="none" stroke="#ffb700" stroke-width="3" stroke-linecap="round" />
+                                <path id="chart-path-express" fill="none" stroke="#00d2ff" stroke-width="3" stroke-linecap="round" />
+                                
+                                <!-- Dots -->
+                                <g id="chart-dots-corridors"></g>
+                                <g id="chart-dots-suburban"></g>
+                                <g id="chart-dots-express"></g>
+                                
+                                <!-- Labels -->
+                                <text x="25" y="35" fill="rgba(255,255,255,0.4)" font-size="10">100</text>
+                                <text x="25" y="85" fill="rgba(255,255,255,0.4)" font-size="10">70</text>
+                                <text x="25" y="135" fill="rgba(255,255,255,0.4)" font-size="10">40</text>
+                                <text x="25" y="185" fill="rgba(255,255,255,0.4)" font-size="10">10</text>
+                                
+                                <g id="chart-x-labels"></g>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 3: DEGRADATION RATE ENGINE -->
+                    <div class="panel-section glass-panel">
+                        <h2 class="panel-title-hud"><i data-lucide="cpu"></i> DEGRADATION VELOCITY COEFFICIENTS</h2>
+                        <div class="degradation-rates-table">
+                            <div class="rate-table-header">
+                                <span>ROAD TYPE</span>
+                                <span>RATE</span>
+                                <span>VELOCITY</span>
+                                <span>AI CONFIDENCE</span>
+                            </div>
+                            <div class="rate-table-row">
+                                <span class="r-type text-magenta"><i data-lucide="zap"></i> Main Corridors</span>
+                                <span class="r-status-tag bg-red">RAPID</span>
+                                <span class="r-velocity text-magenta">-7.8 units/m</span>
+                                <span class="r-conf">94%</span>
+                            </div>
+                            <div class="rate-table-row">
+                                <span class="r-type text-yellow"><i data-lucide="shuffle"></i> Suburban Avenues</span>
+                                <span class="r-status-tag bg-yellow">MODERATE</span>
+                                <span class="r-velocity text-yellow">-3.6 units/m</span>
+                                <span class="r-conf">88%</span>
+                            </div>
+                            <div class="rate-table-row">
+                                <span class="r-type text-blue"><i data-lucide="activity"></i> Expressways</span>
+                                <span class="r-status-tag bg-green">STABLE</span>
+                                <span class="r-velocity text-green">-1.8 units/m</span>
+                                <span class="r-conf">91%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT: SEASONAL CORRELATIONS & RISKS -->
+                <div class="analytic-panel-right">
+                    <!-- SECTION 4: SEASONAL DAMAGE CORRELATION -->
+                    <div class="panel-section glass-panel">
+                        <div class="panel-header-hud flex-between">
+                            <h2 class="panel-title-hud"><i data-lucide="cloud-lightning"></i> ENVIRONMENTAL STRESS FACTORS</h2>
+                            <div class="weather-selector-tabs" id="weather-tabs">
+                                <button class="btn-weather-tab active" data-weather="rain">RAINFALL</button>
+                                <button class="btn-weather-tab" data-weather="temp">TEMPERATURE</button>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-correlation-body">
+                            <!-- Weather dynamic chart -->
+                            <div class="weather-chart-wrapper">
+                                <svg id="svg-weather-chart" viewBox="0 0 300 120" class="custom-svg-chart">
+                                    <path id="weather-curve-bar" fill="none" stroke="rgba(0, 210, 255, 0.4)" stroke-width="8" stroke-linecap="round" />
+                                    <path id="weather-pothole-growth" fill="none" stroke="#ff007f" stroke-width="3" stroke-linecap="round" />
+                                    <g id="weather-x-axis"></g>
+                                </svg>
+                            </div>
+                            
+                            <div class="correlation-explanation" id="correlation-explanation-box">
+                                <div class="explanation-title text-magenta"><i data-lucide="info"></i> SCIENTIFIC CORRELATION</div>
+                                <p class="explanation-text" id="weather-explanation-text">
+                                    Road degradation velocity increases by 37% during high-precipitation periods (>100mm/month). Water seeps into cracks, expanding asphalt matrices under hydraulic stress.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 5: FUTURE RISK FORECAST -->
+                    <div class="panel-section glass-panel">
+                        <h2 class="panel-title-hud"><i data-lucide="skull"></i> 30-DAY CRITICAL PROJECTION ALERTS</h2>
+                        <div class="future-forecast-list" id="future-forecast-list">
+                            <!-- Forecast Item 1 -->
+                            <div class="forecast-item border-red">
+                                <div class="f-header">
+                                    <span class="f-street">MG Road - Sector 4</span>
+                                    <span class="f-probability text-magenta">92% CHANCE</span>
+                                </div>
+                                <div class="f-desc">Rapid base failure. Will decay from MODERATE to CRITICAL within 22 days if unsealed.</div>
+                            </div>
+                            <!-- Forecast Item 2 -->
+                            <div class="forecast-item border-yellow">
+                                <div class="f-header">
+                                    <span class="f-street">Indiranagar 100 Feet Rd & 12th Main</span>
+                                    <span class="f-probability text-yellow">78% CHANCE</span>
+                                </div>
+                                <div class="f-desc">Aggregated truck routing load. Crack propagation speed rising due to sub-base soil erosion.</div>
+                            </div>
+                            <!-- Forecast Item 3 -->
+                            <div class="forecast-item border-green">
+                                <div class="f-header">
+                                    <span class="f-street">Electronic City Expressway North</span>
+                                    <span class="f-probability text-green">14% CHANCE</span>
+                                </div>
+                                <div class="f-desc">Steady sea-spray saline degradation but structural load remains beneath failure threshold.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 5: MUNICIPAL PRIORITY DASHBOARD ================= -->
+        <section id="page-dashboard" class="page-view">
+            <div class="page-header">
+                <span class="page-badge">MUNICIPAL OS CONSOLE</span>
+                <h1 class="page-title serif-italic">Smart-City Command Console</h1>
+                <p class="page-subtitle">Prioritize logistics, check community reports, and dispatch emergency alerts to mobile driver feeds.</p>
+            </div>
+            
+            <!-- SECTION 5: GOVERNMENT STATS -->
+            <div class="gov-stats-grid">
+                <div class="gov-stat-card glass-panel">
+                    <div class="g-stat-title">TOTAL ANALYZED</div>
+                    <div class="g-stat-num" id="gov-analyzed-total">--</div>
+                    <div class="g-stat-sub">Telemetry nodes tracked</div>
+                </div>
+                <div class="gov-stat-card glass-panel">
+                    <div class="g-stat-title">CRITICAL REPAIRS</div>
+                    <div class="g-stat-num text-magenta" id="gov-critical-total">--</div>
+                    <div class="g-stat-sub">Immediate queue</div>
+                </div>
+                <div class="gov-stat-card glass-panel">
+                    <div class="g-stat-title">COMPLAINTS COUNT</div>
+                    <div class="g-stat-num text-yellow" id="gov-complaints-total">--</div>
+                    <div class="g-stat-sub">Citizen reported cases</div>
+                </div>
+                <div class="gov-stat-card glass-panel">
+                    <div class="g-stat-title">AVG RESOLUTION</div>
+                    <div class="g-stat-num text-green">4.2 days</div>
+                    <div class="g-stat-sub">Weekly dispatch response</div>
+                </div>
+            </div>
+            
+            <div class="split-layout">
+                <!-- LEFT: CRITICAL LIST & MUNICIPAL INSIGHTS -->
+                <div class="control-panel">
+                    <!-- SECTION 1: TOP PRIORITY ROADS -->
+                    <div class="panel-section">
+                        <div class="panel-header-hud flex-between">
+                            <h2 class="panel-title-hud"><i data-lucide="list-ordered"></i> CRITICAL DESPATCH QUEUE</h2>
+                            <span class="tag-magenta" id="dispatch-queue-badge">-- QUEUED</span>
+                        </div>
+                        
+                        <div class="critical-roads-list" id="priority-roads-list">
+                            <!-- Populated dynamically by JS -->
+                            <div class="critical-item-loader">Compiling municipal urgency indexes...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- SECTION 3: MUNICIPAL INSIGHTS -->
+                    <div class="panel-section">
+                        <h2 class="panel-title-hud"><i data-lucide="brain"></i> INFRASTRUCTURE INSIGHTS</h2>
+                        <div class="insights-stack">
+                            <div class="insight-pill-item border-magenta">
+                                <i data-lucide="shield-alert" class="text-magenta"></i>
+                                <div class="insight-content">
+                                    <div class="ins-title">Immediate Repair Recommended</div>
+                                    <div class="ins-desc">Koramangala 80 Feet Rd: 5 critical defects within a 45m radius. Impact factor: high.</div>
+                                </div>
+                            </div>
+                            <div class="insight-pill-item border-yellow">
+                                <i data-lucide="triangle-alert" class="text-yellow"></i>
+                                <div class="insight-content">
+                                    <div class="ins-title">Complaint Surge Detected</div>
+                                    <div class="ins-desc">Jayanagar 4th Block sector reports grew by 32% since recent precipitation.</div>
+                                </div>
+                            </div>
+                            <div class="insight-pill-item border-red">
+                                <i data-lucide="zap" class="text-magenta"></i>
+                                <div class="insight-content">
+                                    <div class="ins-title">High Accident Risk</div>
+                                    <div class="ins-desc">Outer Ring Corridor intersection has high structural base shift under traffic.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT: CITY HEATMAP & AUTO-BLAST SYSTEM -->
+                <div class="display-panel flex-grow-map">
+                    <!-- SECTION 2: CITY-WIDE HEATMAP -->
+                    <div class="heatmap-panel-container">
+                        <div class="heatmap-header">
+                            <span>MUNICIPAL DENSITY HEATMAP</span>
+                            <span class="glow-tag">SECTOR SCANS ACTIVE</span>
+                        </div>
+                        <div id="dashboard-map" class="map-canvas dashboard-map-view"></div>
+                    </div>
+                    
+                    <!-- SECTION 4: SOCIAL MEDIA AUTO-BLAST SYSTEM -->
+                    <div class="social-blast-panel glass-panel">
+                        <div class="blast-header">
+                            <div class="flex-center">
+                                <i data-lucide="megaphone" class="glow-magenta-icon"></i>
+                                <span class="blast-title">MUNICIPAL PUBLIC ALERT BLASTER</span>
+                            </div>
+                            <button class="cta-pill primary small" id="btn-trigger-blast">
+                                <span>BROADCAST ALERTS</span>
+                                <i data-lucide="send"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="blast-workspace">
+                            <!-- Left: Target Selector -->
+                            <div class="blast-selectors">
+                                <div class="setting-title">TARGET CRITICAL ZONE</div>
+                                <select id="blast-road-selector" class="sleek-select">
+                                    <!-- Populated by JS -->
+                                    <option value="">Select Priority Segment</option>
+                                </select>
+                                
+                                <div class="setting-title" style="margin-top: 15px;">MOCKED INTEGRATIONS</div>
+                                <div class="mock-channels">
+                                    <span class="m-channel active-chan"><i data-lucide="twitter"></i> X / TWITTER</span>
+                                    <span class="m-channel active-chan"><i data-lucide="message-square"></i> TELEGRAM</span>
+                                    <span class="m-channel active-chan"><i data-lucide="phone"></i> WHATSAPP</span>
+                                    <span class="m-channel active-chan"><i data-lucide="rss"></i> LOCAL FEED</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Right: Alert Preview Card -->
+                            <div class="blast-preview-wrap">
+                                <div class="setting-title">ALERT PREVIEW</div>
+                                <div class="mock-tweet-card">
+                                    <div class="tweet-user">
+                                        <div class="user-avatar">RS</div>
+                                        <div class="user-details">
+                                            <span class="user-name">RoadSense Alert Engine</span>
+                                            <span class="user-handle">@RoadSense_OS · Automated</span>
+                                        </div>
+                                    </div>
+                                    <div class="tweet-content" id="mock-tweet-text">
+                                        ⚠️ Critical road degradation detected near Outer Ring Road. Citizens are advised to drive cautiously. RoadSense AI has flagged this zone for urgent municipal repair.
+                                    </div>
+                                    <div class="tweet-footer">
+                                        <i data-lucide="heart"></i> <span>24</span>
+                                        <i data-lucide="repeat"></i> <span>18</span>
+                                        <i data-lucide="share-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Success Banner Overlay -->
+                        <div class="blast-success-banner inactive" id="blast-success-banner">
+                            <div class="blast-spinner" id="blast-spinner"></div>
+                            <span class="success-txt" id="blast-success-txt">TRANSMITTING PUBLIC EMBARGO BROADCASTS...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER TELEMETRY -->
+    <footer class="footer-telemetry">
+        <div class="footer-content">
+            <div>SYSTEM LATENCY: <span id="foot-latency">8ms</span></div>
+            <div>CORE CLUSTERS: <span class="text-blue">SEC_08 // SEC_12</span></div>
+            <div>ROADSENSE TECHNOLOGIES © 2026 // ALL RIGHTS RESERVED</div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Core Application Logic -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
