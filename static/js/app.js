@@ -4,6 +4,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    // Apply stored theme on init immediately
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+
     // Core Application State
     const state = {
         activePage: 'landing',
@@ -159,6 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('nav-cta-btn').addEventListener('click', () => {
         navigateToPage('lab');
     });
+
+    // Theme Toggle Handler
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            invalidateMaps();
+        });
+    }
 
     // Landing Hero Action Buttons
     document.getElementById('hero-primary-cta').addEventListener('click', () => {
@@ -717,64 +736,133 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderLabDetections(data) {
-        // Display image
+        // ── Stop loading UI ──────────────────────────────────────────────
         if (scanLoader) scanLoader.style.display = 'none';
         if (laserLine) {
             laserLine.style.display = 'none';
             laserLine.style.animation = '';
         }
-        
+
+        // ── Show annotated image ─────────────────────────────────────────
         if (imageDisplay) {
             imageDisplay.src = data.processed_image;
             imageDisplay.style.display = 'block';
         }
-        
+
         if (scanIndicatorText) {
-            scanIndicatorText.innerText = "TELEMETRY COMPLETED";
-            scanIndicatorText.style.color = "var(--color-accent-green)";
+            scanIndicatorText.innerText = data.is_pothole ? 'ANOMALY DETECTED' : 'SCAN COMPLETE';
+            scanIndicatorText.style.color = data.is_pothole
+                ? 'var(--color-accent-red)'
+                : 'var(--color-accent-green)';
         }
-        
-        // Update metric values
-        document.getElementById('metric-confidence').innerText = `${data.confidence.toFixed(1)}%`;
-        document.getElementById('metric-count').innerText = data.count;
-        
+
+        // ── VERDICT BANNER ───────────────────────────────────────────────
+        const banner       = document.getElementById('detection-verdict-banner');
+        const verdictLabel = document.getElementById('verdict-label');
+        const verdictSub   = document.getElementById('verdict-sublabel');
+        const verdictBadge = document.getElementById('verdict-badge');
+        const verdictIcon  = document.getElementById('verdict-icon');
+
+        if (banner) {
+            // Reset classes and re-trigger animation
+            banner.className = 'detection-verdict-banner';
+            banner.style.display = 'flex';
+            // Force reflow to restart animation
+            void banner.offsetWidth;
+
+            if (data.is_pothole) {
+                banner.classList.add('verdict-pothole');
+                if (verdictLabel) verdictLabel.textContent = '⚠ POTHOLE DETECTED';
+                const subTexts = {
+                    'Critical':  'Critical pavement failure — immediate repair required',
+                    'High Risk': 'Significant road damage — high vehicle impact risk',
+                    'Moderate':  'Moderate surface defects — schedule maintenance soon',
+                };
+                if (verdictSub)   verdictSub.textContent  = subTexts[data.severity] || 'Road surface defect identified';
+                if (verdictBadge) verdictBadge.textContent = data.severity.toUpperCase();
+                if (verdictIcon) {
+                    verdictIcon.setAttribute('data-lucide', 'alert-triangle');
+                }
+            } else {
+                banner.classList.add('verdict-normal');
+                if (verdictLabel) verdictLabel.textContent = '✓ NORMAL ROAD';
+                if (verdictSub)   verdictSub.textContent  = `No significant pavement damage detected — road score ${data.road_score}/100`;
+                if (verdictBadge) verdictBadge.textContent = 'CLEAR';
+                if (verdictIcon) {
+                    verdictIcon.setAttribute('data-lucide', 'shield-check');
+                }
+            }
+            lucide.createIcons();
+        }
+
+        // ── Telemetry metrics ────────────────────────────────────────────
+        const elConf = document.getElementById('metric-confidence');
+        if (elConf) elConf.innerText = `${data.confidence.toFixed(1)}%`;
+
+        const elCount = document.getElementById('metric-count');
+        if (elCount) elCount.innerText = data.count;
+
         const elSev = document.getElementById('metric-severity');
         if (elSev) {
             elSev.innerText = data.severity.toUpperCase();
             elSev.className = `metric-num ${getSeverityColorClass(data.severity)}`;
         }
-        
+
         const elUrg = document.getElementById('metric-urgency');
         if (elUrg) {
-            const urgency = data.severity === 'Critical' ? 'IMMEDIATE' : data.severity === 'High Risk' ? 'PRIORITY 1' : data.severity === 'Moderate' ? 'SCHEDULED' : 'NONE';
-            elUrg.innerText = urgency;
-            elUrg.className = `metric-num ${getSeverityColorClass(data.severity)}`;
+            const urgencyMap = {
+                'Critical':  'IMMEDIATE',
+                'High Risk': 'PRIORITY 1',
+                'Moderate':  'SCHEDULED',
+                'Stable':    'NONE'
+            };
+            elUrg.innerText   = urgencyMap[data.severity] || 'NONE';
+            elUrg.className   = `metric-num ${getSeverityColorClass(data.severity)}`;
         }
 
-        // Circular Road Health Score Progress UI
-        const scoreEl = document.getElementById('radial-health-score');
-        const scoreLabel = document.getElementById('radial-health-label');
+        // ── Analysis breakdown (new fields) ──────────────────────────────
+        if (data.analysis) {
+            const elDark = document.getElementById('metric-dark-ratio');
+            if (elDark) elDark.innerText = data.analysis.dark_ratio !== undefined
+                ? `${(data.analysis.dark_ratio * 100).toFixed(2)}%`
+                : '--';
+
+            const elEdge = document.getElementById('metric-edge-density');
+            if (elEdge) elEdge.innerText = data.analysis.edge_density !== undefined
+                ? `${(data.analysis.edge_density * 100).toFixed(2)}%`
+                : '--';
+
+            const elVar = document.getElementById('metric-variance-cells');
+            if (elVar) elVar.innerText = data.analysis.high_variance_cells !== undefined
+                ? `${data.analysis.high_variance_cells} / 16 cells`
+                : '--';
+        }
+
+        // ── Circular road health score ────────────────────────────────────
+        const scoreEl      = document.getElementById('radial-health-score');
+        const scoreLabel   = document.getElementById('radial-health-label');
         const strokeCircle = document.getElementById('radial-health-stroke');
-        
+
         if (scoreEl) scoreEl.innerText = data.road_score;
         if (scoreLabel) {
-            scoreLabel.innerText = data.road_score > 75 ? "Optimal State" : data.road_score > 50 ? "Moderate Wear" : "Critical Decay";
+            scoreLabel.innerText = data.road_score > 75 ? 'Optimal State'
+                                 : data.road_score > 50 ? 'Moderate Wear'
+                                 : 'Critical Decay';
             scoreLabel.style.color = getSeverityColor(data.severity);
         }
-        
         if (strokeCircle) {
-            const radius = strokeCircle.r.baseVal.value;
+            const radius       = strokeCircle.r.baseVal.value;
             const circumference = 2 * Math.PI * radius;
-            const offset = circumference - (data.road_score / 100) * circumference;
+            const offset       = circumference - (data.road_score / 100) * circumference;
             strokeCircle.style.strokeDashoffset = offset;
-            strokeCircle.style.stroke = getSeverityColor(data.severity);
-            strokeCircle.style.filter = `drop-shadow(0 0 5px ${getSeverityColor(data.severity)})`;
+            strokeCircle.style.stroke           = getSeverityColor(data.severity);
+            strokeCircle.style.filter           = `drop-shadow(0 0 5px ${getSeverityColor(data.severity)})`;
         }
 
-        // Trigger LiDAR 3D mesh deformations based on detected pothole coordinates
+        // ── LiDAR 3D mesh deformation ────────────────────────────────────
         triggerLidarCraters(data.potholes);
-        
-        // Refresh city database points
+
+        // ── Refresh city hazard map ──────────────────────────────────────
         fetchPotholes();
     }
 

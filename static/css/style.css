@@ -37,6 +37,30 @@
     --transition-premium: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+body.light-mode {
+    /* Light Mode Color Palette */
+    --color-bg-darkest: #f4f5f6;
+    --color-bg-dark: #eaecee;
+    --color-bg-graphite: #e2e4e8;
+    --color-bg-card: rgba(240, 242, 245, 0.8);
+    
+    --color-accent-blue: #0076ff;
+    --color-accent-magenta: #d9006c;
+    --color-accent-green: #00a651;
+    --color-accent-yellow: #d99b00;
+    --color-accent-red: #d90036;
+    
+    --color-text-primary: #1c1c1e;
+    --color-text-secondary: #5e5e62;
+    --color-text-muted: #8e8e93;
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-border-glow: rgba(0, 118, 255, 0.25);
+    
+    --glow-blue: 0 0 20px rgba(0, 118, 255, 0.18);
+    --glow-magenta: 0 0 20px rgba(217, 0, 108, 0.18);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
+}
+
 /* ==========================================================================
    RESET & BASICS
    ========================================================================== */
@@ -58,6 +82,7 @@ body {
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 a {
@@ -1013,6 +1038,136 @@ a {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ── DETECTION VERDICT BANNER ──────────────────────────────────────────── */
+.detection-verdict-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: var(--border-radius-card);
+    border: 1px solid;
+    margin-bottom: 4px;
+    animation: verdictSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes verdictSlideIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.detection-verdict-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    pointer-events: none;
+}
+
+/* Pothole state */
+.detection-verdict-banner.verdict-pothole {
+    background: rgba(255, 0, 55, 0.06);
+    border-color: rgba(255, 0, 55, 0.35);
+    box-shadow: 0 0 30px rgba(255, 0, 55, 0.1);
+}
+.detection-verdict-banner.verdict-pothole::before {
+    background: linear-gradient(135deg, #ff0037, transparent);
+}
+
+/* Normal road state */
+.detection-verdict-banner.verdict-normal {
+    background: rgba(0, 255, 127, 0.05);
+    border-color: rgba(0, 255, 127, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 127, 0.08);
+}
+.detection-verdict-banner.verdict-normal::before {
+    background: linear-gradient(135deg, #00ff7f, transparent);
+}
+
+.verdict-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.verdict-pothole .verdict-icon-wrap {
+    background: rgba(255, 0, 55, 0.15);
+    color: #ff0037;
+    box-shadow: 0 0 16px rgba(255, 0, 55, 0.25);
+}
+
+.verdict-normal .verdict-icon-wrap {
+    background: rgba(0, 255, 127, 0.12);
+    color: #00ff7f;
+    box-shadow: 0 0 16px rgba(0, 255, 127, 0.2);
+}
+
+.verdict-content {
+    flex: 1;
+}
+
+.verdict-label {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 4px;
+}
+
+.verdict-pothole .verdict-label { color: #ff4060; }
+.verdict-normal  .verdict-label { color: #00ff7f; }
+
+.verdict-sublabel {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+}
+
+.verdict-badge {
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.verdict-pothole .verdict-badge {
+    background: rgba(255, 0, 55, 0.15);
+    color: #ff4060;
+    border: 1px solid rgba(255, 0, 55, 0.3);
+}
+
+.verdict-normal .verdict-badge {
+    background: rgba(0, 255, 127, 0.1);
+    color: #00ff7f;
+    border: 1px solid rgba(0, 255, 127, 0.25);
+}
+
+/* Pulse animation for pothole icon */
+@keyframes verdictPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.15); opacity: 0.8; }
+}
+
+.verdict-pothole .verdict-icon-wrap i {
+    animation: verdictPulse 1.5s ease-in-out infinite;
+}
+
+/* Metric divider */
+.metric-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 2px 0;
 }
 
 /* Diagnostic Grid */
@@ -2378,3 +2533,103 @@ input:checked + .slider:before {
     font-weight: 700;
     letter-spacing: 0.05em;
 }
+
+/* ==========================================================================
+   THEME TOGGLE & LIGHT MODE OVERRIDES
+   ========================================================================== */
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: var(--transition-premium);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.05);
+}
+
+.theme-toggle-btn:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    transform: scale(1.05);
+}
+
+/* Toggle icon display rules */
+.theme-icon-sun {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+.theme-icon-moon {
+    display: none;
+    width: 18px;
+    height: 18px;
+}
+
+body.light-mode .theme-icon-sun {
+    display: none;
+}
+body.light-mode .theme-icon-moon {
+    display: block;
+}
+
+/* Light mode overrides for the button */
+body.light-mode .theme-toggle-btn {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.04));
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+body.light-mode .theme-toggle-btn:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Leaflet Tile Inversion Filter for light mode */
+body.light-mode .leaflet-tile-pane {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%) saturate(60%);
+}
+
+body.light-mode .leaflet-container {
+    background: #eaecee !important;
+}
+
+/* Premium Leaflet Popup overrides for both modes */
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: var(--color-bg-graphite) !important;
+    color: var(--color-text-primary) !important;
+    border: 1px solid var(--color-border) !important;
+    box-shadow: var(--shadow-glass) !important;
+    border-radius: 8px !important;
+}
+
+/* Custom SVG chart overrides for light mode */
+body.light-mode .custom-svg-chart line {
+    stroke: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .custom-svg-chart text {
+    fill: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Progress ring background line override for light mode */
+body.light-mode .progress-ring-bg {
+    stroke: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Lidar surface mesh grid lines override for light mode */
+body.light-mode .lidar-mesh-container {
+    background: #eaecee !important;
+}
+
+body.light-mode .lidar-canvas {
+    opacity: 0.95;
+}
+
