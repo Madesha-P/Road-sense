@@ -48,11 +48,17 @@
                 <li data-page="analytics"><a href="#analytics">Analytics</a></li>
                 <li data-page="dashboard"><a href="#dashboard">Dashboard</a></li>
             </ul>
-            
-            <button class="cta-pill-nav" id="nav-cta-btn">
-                <span class="btn-shine"></span>
-                <span class="btn-text">Analyze Road</span>
-            </button>
+            <div class="nav-right-actions" style="display: flex; align-items: center; gap: 16px;">
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon-moon"></i>
+                </button>
+                
+                <button class="cta-pill-nav" id="nav-cta-btn">
+                    <span class="btn-shine"></span>
+                    <span class="btn-text">Analyze Road</span>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -297,6 +303,18 @@
                         </div>
                     </div>
                     
+                    <!-- DETECTION VERDICT BANNER -->
+                    <div class="detection-verdict-banner" id="detection-verdict-banner" style="display:none;">
+                        <div class="verdict-icon-wrap" id="verdict-icon-wrap">
+                            <i data-lucide="alert-triangle" id="verdict-icon"></i>
+                        </div>
+                        <div class="verdict-content">
+                            <div class="verdict-label" id="verdict-label">POTHOLE DETECTED</div>
+                            <div class="verdict-sublabel" id="verdict-sublabel">High-severity pavement damage identified</div>
+                        </div>
+                        <div class="verdict-badge" id="verdict-badge">CRITICAL</div>
+                    </div>
+
                     <!-- SECTION 4: DIAGNOSTIC DETAILS -->
                     <div class="diagnostic-grid">
                         
@@ -319,6 +337,19 @@
                                 <div class="metric-row">
                                     <span>REPAIR PRIORITY</span>
                                     <span class="metric-num" id="metric-urgency">N/A</span>
+                                </div>
+                                <div class="metric-divider"></div>
+                                <div class="metric-row">
+                                    <span>DARK REGION RATIO</span>
+                                    <span class="metric-num text-blue" id="metric-dark-ratio">--</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>EDGE DENSITY</span>
+                                    <span class="metric-num text-blue" id="metric-edge-density">--</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>SURFACE VARIANCE</span>
+                                    <span class="metric-num text-blue" id="metric-variance-cells">--</span>
                                 </div>
                             </div>
                         </div>

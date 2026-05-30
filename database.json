@@ -128,5 +128,55 @@
         "count": 4,
         "timestamp": "2026-05-29T05:33:34Z",
         "street": "High Tension Main Road"
+    },
+    {
+        "id": "PH-014",
+        "lat": 12.336853584362709,
+        "lng": 76.61942222268283,
+        "severity": "Critical",
+        "score": 18,
+        "count": 3,
+        "timestamp": "2026-05-29T07:28:33Z",
+        "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
+    },
+    {
+        "id": "PH-015",
+        "lat": 12.336853584362709,
+        "lng": 76.61942222268283,
+        "severity": "Critical",
+        "score": 31,
+        "count": 3,
+        "timestamp": "2026-05-29T07:32:52Z",
+        "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
+    },
+    {
+        "id": "PH-016",
+        "lat": 12.336807201509956,
+        "lng": 76.61941366984061,
+        "severity": "Critical",
+        "score": 27,
+        "count": 3,
+        "timestamp": "2026-05-29T07:52:36Z",
+        "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
+    },
+    {
+        "id": "PH-017",
+        "lat": 12.336691622816335,
+        "lng": 76.61948375079452,
+        "severity": "Critical",
+        "score": 37,
+        "count": 3,
+        "timestamp": "2026-05-30T02:27:39Z",
+        "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
+    },
+    {
+        "id": "PH-018",
+        "lat": 12.336691622816335,
+        "lng": 76.61948375079452,
+        "severity": "Critical",
+        "score": 29,
+        "count": 3,
+        "timestamp": "2026-05-30T02:28:23Z",
+        "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
     }
 ]
