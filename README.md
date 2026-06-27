@@ -33,19 +33,3 @@ python app.py
 
 Open `http://localhost:5000` in your browser.
 
-## API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | Web dashboard |
-| `/api/diagnostics/upload-capture` | POST | Upload road image for pothole detection |
-| `/api/hazards/live` | GET | Get all pothole records |
-| `/api/routes/calculate-safe-path` | POST | Calculate safest/balanced/fastest route |
-| `/driver-alert` | POST | Get alerts for nearby potholes |
-| `/predictive-analysis` | POST | Get degradation trend data |
-| `/api/karnataka/roads` | GET | Get potholes within Karnataka bounds |
-| `/api/karnataka/road-score` | POST | Get road score for a specific location |
-
-## License
-
-MIT
