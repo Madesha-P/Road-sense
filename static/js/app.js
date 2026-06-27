@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Apply DOM updates
         const elHealth = document.getElementById('hud-city-health');
         if (elHealth) {
-            elHealth.innerText = `${avgScore}.2%`;
+            elHealth.innerText = `${avgScore.toFixed(1)}%`;
             elHealth.className = avgScore > 75 ? 'hud-val text-green' : avgScore > 50 ? 'hud-val text-yellow' : 'hud-val text-magenta';
         }
         
@@ -691,6 +691,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function processLabFile(file) {
+        if (state._processing) return;
+        state._processing = true;
+
         // Toggle scan visual state
         if (scanLoader) scanLoader.style.display = 'flex';
         if (laserLine) {
@@ -732,6 +735,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (scanLoader) scanLoader.style.display = 'none';
             if (laserLine) laserLine.style.display = 'none';
             if (scanIndicatorText) scanIndicatorText.innerText = "ERROR";
+            // Re-show placeholder
+            if (displayPlaceholder) displayPlaceholder.style.display = 'flex';
+            if (imageDisplay) imageDisplay.style.display = 'none';
+        } finally {
+            state._processing = false;
         }
     }
 
@@ -864,6 +872,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ── Refresh city hazard map ──────────────────────────────────────
         fetchPotholes();
+
+        state._processing = false;
     }
 
     function getSeverityColorClass(sev) {

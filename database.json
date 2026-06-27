@@ -178,5 +178,55 @@
         "count": 3,
         "timestamp": "2026-05-30T02:28:23Z",
         "street": "High Tension Main Road, Manche Gowdana Koppalu, Mysuru"
+    },
+    {
+        "id": "PH-019",
+        "lat": 12.9716,
+        "lng": 77.5946,
+        "severity": "Critical",
+        "score": 26,
+        "count": 4,
+        "timestamp": "2026-06-01T16:26:01Z",
+        "street": "St. Joseph's Indian High School, Vittal Mallya Road, D'Souza Layout"
+    },
+    {
+        "id": "PH-020",
+        "lat": 12.9716,
+        "lng": 77.5946,
+        "severity": "Moderate",
+        "score": 64,
+        "count": 1,
+        "timestamp": "2026-06-01T16:26:25Z",
+        "street": "St. Joseph's Indian High School, Vittal Mallya Road, D'Souza Layout"
+    },
+    {
+        "id": "PH-021",
+        "lat": 12.9716,
+        "lng": 77.5946,
+        "severity": "Critical",
+        "score": 30,
+        "count": 3,
+        "timestamp": "2026-06-27T10:20:50Z",
+        "street": "St. Joseph's Indian High School, Vittal Mallya Road, D'Souza Layout"
+    },
+    {
+        "id": "PH-022",
+        "lat": 12.9716,
+        "lng": 77.5946,
+        "severity": "High Risk",
+        "score": 47,
+        "count": 2,
+        "timestamp": "2026-06-27T10:21:51Z",
+        "street": "St. Joseph's Indian High School, Vittal Mallya Road, D'Souza Layout"
+    },
+    {
+        "id": "PH-023",
+        "lat": 12.9716,
+        "lng": 77.5946,
+        "severity": "Critical",
+        "score": 19,
+        "count": 3,
+        "timestamp": "2026-06-27T10:22:27Z",
+        "street": "St. Joseph's Indian High School, Vittal Mallya Road, D'Souza Layout"
     }
 ]

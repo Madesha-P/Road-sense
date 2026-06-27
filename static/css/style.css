@@ -722,6 +722,10 @@ a {
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
+.panel-section.inactive {
+    display: none;
+}
+
 .panel-title-hud {
     font-size: 11px;
     font-weight: 700;
@@ -799,13 +803,7 @@ a {
 }
 
 .hidden-file-input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
+    display: none;
 }
 
 /* Sample selection */
@@ -2476,6 +2474,7 @@ input:checked + .slider:before {
 
 .text-blue { color: var(--color-accent-blue); }
 .text-magenta { color: var(--color-accent-magenta); }
+.text-red { color: var(--color-accent-red); }
 .text-green { color: var(--color-accent-green); }
 .text-yellow { color: var(--color-accent-yellow); }
 .text-white { color: var(--color-text-primary); }
@@ -2580,7 +2579,135 @@ body.light-mode .theme-icon-moon {
     display: block;
 }
 
-/* Light mode overrides for the button */
+/* Light mode: panel backgrounds */
+body.light-mode .navbar {
+    background: rgba(240, 242, 245, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .navbar:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+}
+body.light-mode .nav-links li::after {
+    background: var(--color-accent-blue);
+}
+body.light-mode .panel-section {
+    background: rgba(240, 242, 245, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .glass-panel {
+    background: rgba(240, 242, 245, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .hud-widget {
+    background: rgba(240, 242, 245, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .driver-alert-console {
+    background: rgba(240, 242, 245, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .upload-dropzone {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+body.light-mode .upload-dropzone:hover {
+    background: rgba(0, 118, 255, 0.03);
+    border-color: var(--color-accent-blue);
+}
+body.light-mode .scanner-screen {
+    background: #e2e4e8;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .scanner-screen-header {
+    background: #d8dadc;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .image-viewer-container {
+    background: radial-gradient(circle, #e8eaec 0%, #d4d6d8 100%);
+}
+body.light-mode .map-preview-container {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .routes-map-container {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .heatmap-panel-container {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .input-with-icon {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .footer-telemetry {
+    background: #eaecee;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .ambient-glow {
+    opacity: 0.05;
+}
+body.light-mode .grid-overlay {
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+body.light-mode .social-blast-panel {
+    background: rgba(240, 242, 245, 0.85);
+}
+body.light-mode .blast-success-banner {
+    background: rgba(240, 242, 245, 0.95);
+}
+body.light-mode .feature-card {
+    background: rgba(240, 242, 245, 0.8);
+}
+body.light-mode .critical-road-item {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .critical-road-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+body.light-mode .route-card {
+    background: rgba(0, 0, 0, 0.02);
+}
+body.light-mode .route-card:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+body.light-mode .forecast-item {
+    background: rgba(240, 242, 245, 0.5);
+}
+body.light-mode .inventory-item {
+    background: rgba(0, 0, 0, 0.02);
+}
+body.light-mode .inventory-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+body.light-mode .insight-pill-item {
+    background: rgba(0, 0, 0, 0.02);
+}
+body.light-mode .mock-tweet-card {
+    background: rgba(0, 0, 0, 0.03);
+}
+body.light-mode .setting-row {
+    background: rgba(0, 0, 0, 0.03);
+}
+body.light-mode .sleek-select {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .lidar-mesh-container {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .correlation-explanation {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .rate-table-row {
+    background: rgba(240, 242, 245, 0.85);
+}
+body.light-mode .degradation-rates-table {
+    background: rgba(0, 0, 0, 0.08);
+}
+
 body.light-mode .theme-toggle-btn {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.04));
     border-color: var(--color-border);
