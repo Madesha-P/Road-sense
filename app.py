@@ -366,11 +366,6 @@ def _fallback_result():
 def index():
     return render_template('index.html')
 
-@app.route('/static/<path:path>')
-def serve_static(path):
-    return send_from_directory('static', path)
-
-
 # ── PRIMARY DETECTION ENDPOINT (used by frontend) ────────────────────────────
 @app.route('/api/diagnostics/upload-capture', methods=['POST'])
 def upload_capture():
