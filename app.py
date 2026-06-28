@@ -44,8 +44,11 @@ KARNATAKA_BOUNDS = {"lat_min": 11.5, "lat_max": 18.5, "lng_min": 74.0, "lng_max"
 
 def load_db():
     if not os.path.exists(DB_FILE):
-        with open(DB_FILE, 'w') as f:
-            json.dump(DEFAULT_POTHOLES, f, indent=4)
+        try:
+            with open(DB_FILE, 'w') as f:
+                json.dump(DEFAULT_POTHOLES, f, indent=4)
+        except (OSError, PermissionError):
+            pass
         return list(DEFAULT_POTHOLES)
     try:
         with open(DB_FILE, 'r') as f:
@@ -65,16 +68,22 @@ def load_db():
                     "timestamp": p.get("timestamp", ""),
                     "street": p.get("street", p.get("street_name", "Unknown"))
                 })
-            with open(DB_FILE, 'w') as f:
-                json.dump(converted, f, indent=4)
+            try:
+                with open(DB_FILE, 'w') as f:
+                    json.dump(converted, f, indent=4)
+            except (OSError, PermissionError):
+                pass
             return converted
         return data
     except Exception:
         return list(DEFAULT_POTHOLES)
 
 def save_db(data):
-    with open(DB_FILE, 'w') as f:
-        json.dump(data, f, indent=4)
+    try:
+        with open(DB_FILE, 'w') as f:
+            json.dump(data, f, indent=4)
+    except (OSError, PermissionError):
+        pass
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     """Haversine distance in meters."""
@@ -218,7 +227,7 @@ def analyze_road_image(file_bytes):
         detection_label = "POTHOLE DETECTED" if is_pothole else "NORMAL ROAD"
 
         # ── Step 7: Draw annotated output image ────────────────────────────
-        annotated = img.copy()
+        annotated = img.convert("RGBA")
         draw = ImageDraw.Draw(annotated)
 
         detected_potholes = []
@@ -307,7 +316,7 @@ def analyze_road_image(file_bytes):
 
         # Encode to base64
         buf = io.BytesIO()
-        annotated.save(buf, format="JPEG", quality=88)
+        annotated.convert("RGB").save(buf, format="JPEG", quality=88)
         annotated_b64 = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode('utf-8')
 
         return {
@@ -635,4 +644,5 @@ def get_karnataka_road_score():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
